@@ -213,3 +213,12 @@ Blockly.Commands['command_achievement'] = function(block) {
   var code = 'achievement '+dropdown_action+' '+value_stat+value_players;
   return [code, Blockly.Commands.ORDER_NONE];
 };
+
+Blockly.Commands['command_blockdata'] = function(block) {
+  var value_coords = Blockly.Commands.valueToCode(block, 'COORDS', Blockly.Commands.ORDER_NONE);
+  var value_nbt = Blockly.Commands.valueToCode(block, 'NBT', Blockly.Commands.ORDER_NONE);
+  if(value_coords == "") value_coords = "<x> <y> <z>";
+  if(value_nbt == "") value_nbt = '<datatag>';
+  var code = 'blockdata '+value_coords+' '+value_nbt;
+  return [code, Blockly.Commands.ORDER_NONE];
+};

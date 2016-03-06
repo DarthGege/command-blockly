@@ -75,3 +75,23 @@ Blockly.Blocks['command_achievement'] = {
     this.setHelpUrl('http://www.example.com/');
   }
 };
+
+Blockly.Blocks['command_blockdata'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("blockdata");
+    this.appendValueInput("COORDS")
+        .setCheck("coords")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("<x> <y> <z>");
+    this.appendValueInput("NBT")
+        .setCheck("nbt_compound")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("<datatag>");
+    this.setInputsInline(false);
+    this.setOutput(true, "command");
+    this.setColour(65);
+    this.setTooltip('');
+    this.setHelpUrl('http://www.example.com/');
+  }
+};

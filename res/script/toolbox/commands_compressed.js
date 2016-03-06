@@ -35,6 +35,7 @@ Toolbox.Tree =
     ],
     ['category',{'name':'Command'},
       ['block',{'type':'command_achievement'}],
+      ['block',{'type':'command_blockdata'}],
     ],
   ]
 

@@ -173,26 +173,33 @@ Blockly.Commands.scrub_ = function(block, code) {
 //Structure to accept commands
 Blockly.Commands['simple_command'] = function(block) {
   var value_command = Blockly.Commands.valueToCode(block, 'COMMAND', Blockly.Commands.ORDER_NONE);
-  var code = '/'+value_command+"\n";
+  var code = "";
+  if(value_command != "") code = '/'+value_command+"\n"; 
   return code;
 };
 
-//Common Structures 
+//Common Structures
+Blockly.Commands['stat_text_input'] = function(block) {
+  var text_stat = block.getFieldValue('STAT');
+  // TODO: Assemble Python into code variable.
+  var code = text_stat;
+  // TODO: Change ORDER_NONE to the correct strength.
+  return [code, Blockly.Commands.ORDER_NONE];
+};
+
 Blockly.Commands['player_selector'] = function(block) {
   var dropdown_name = block.getFieldValue('NAME');
   var value_name = Blockly.Commands.valueToCode(block, 'NAME', Blockly.Commands.ORDER_NONE);
-
-  var code = '@'+dropdown_name+"["+value_name+"]";
-
+  var code = '@'+dropdown_name
+  if(value_name != "") code = code + "[" + value_name + "]";
   return [code, Blockly.Commands.ORDER_NONE];
 };
 
 Blockly.Commands['ps_mode'] = function(block) {
   var dropdown_name = block.getFieldValue('NAME');
   var value_name = Blockly.Commands.valueToCode(block, 'NAME', Blockly.Commands.ORDER_NONE);
-  // TODO: Assemble JavaScript into code variable.
-  var code = 'm='+dropdown_name+','+value_name;
-  // TODO: Change ORDER_NONE to the correct strength.
+  var code = 'm=' + dropdown_name;
+  if(value_name != "") code = code + ',' + value_name;
   return [code, Blockly.Commands.ORDER_NONE];
 };
 
@@ -201,8 +208,8 @@ Blockly.Commands['command_achievement'] = function(block) {
   var dropdown_action = block.getFieldValue('ACTION');
   var value_stat = Blockly.Commands.valueToCode(block, 'STAT', Blockly.Commands.ORDER_NONE);
   var value_players = Blockly.Commands.valueToCode(block, 'PLAYERS', Blockly.Commands.ORDER_NONE);
-
-  var code = 'achievement '+dropdown_action+' '+value_stat+' '+value_players;
-
+  if(value_stat == "") value_stat = "*";
+  if(value_players != "") value_players = ' '+value_players;
+  var code = 'achievement '+dropdown_action+' '+value_stat+value_players;
   return [code, Blockly.Commands.ORDER_NONE];
 };

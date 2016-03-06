@@ -16,6 +16,18 @@ Blockly.Blocks['simple_command'] = {
 };
 
 //Common Structures 
+Blockly.Blocks['stat_text_input'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldTextInput("achievement.openInventory"), "STAT");
+    this.setInputsInline(false);
+    this.setOutput(true, "stat");
+    this.setColour(120);
+    this.setTooltip('');
+    this.setHelpUrl('http://www.example.com/');
+  }
+};
+
 Blockly.Blocks['player_selector'] = {
   init: function() {
     this.appendValueInput("NAME")
@@ -42,6 +54,7 @@ Blockly.Blocks['ps_mode'] = {
     this.setHelpUrl('http://www.example.com/');
   }
 };
+
 //commands
 Blockly.Blocks['command_achievement'] = {
   init: function() {

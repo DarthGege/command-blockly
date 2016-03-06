@@ -1,64 +1,36 @@
 <!DOCTYPE html>
 <html>
 	<head>
+		<title>Command-Blockly</title>
 		<meta charset="utf-8">
 		<meta name="google" value="notranslate">
-		<title>Command-Blockly</title>
-		<link rel="stylesheet" href="style.css">
-		<script src="/storage.js"></script>
-		<script src="deps/blockly/blockly_uncompressed.js"></script>
-		<script src="deps/blockly/blocks/colour.js"></script>
-		<script src="deps/blockly/blocks/lists.js"></script>
-		<script src="deps/blockly/blocks/logic.js"></script>
-		<script src="deps/blockly/blocks/loops.js"></script>
-		<script src="deps/blockly/blocks/math.js"></script>
-		<script src="deps/blockly/blocks/procedures.js"></script>
-		<script src="deps/blockly/blocks/text.js"></script>
-		<script src="deps/blockly/blocks/variables.js"></script>
-		<script src="generators/commands.js"></script>
-		<script src="generators/commands/colour.js"></script>
-		<script src="generators/commands/lists.js"></script>
-		<script src="generators/commands/logic.js"></script>
-		<script src="generators/commands/loops.js"></script>
-		<script src="generators/commands/math.js"></script>
-		<script src="generators/commands/procedures.js"></script>
-		<script src="generators/commands/text.js"></script>
-		<script src="generators/commands/variables.js"></script>
-		<script src="code.js"></script>
+		<link rel="stylesheet" href="res/style/command-blockly.css">
+		<script src="deps/blockly/blockly_compressed.js"></script>
+		<script src="res/script/toolbox/commands_compressed.js"></script>
+		<script src="res/script/blocks/commands_compressed.js"></script>
+		<script src="res/script/generators/commands_compressed.js"></script>
+		<script src="res/script/command-blockly.js"></script>
 	</head>
 	<body>
-		<table width="100%" height="100%">
-			<tr>
-				<td>
-					<h1>Command-Blockly</h1>
-				</td>
-				<td class="farSide">
-					<select id="languageMenu"></select>
-				</td>
-			</tr>
-			<tr>
-				<td colspan=2>
-					<table width="100%">
-						<tr id="tabRow" height="1em">
-							<td id="tab_blocks" class="tabon">...</td>
-							<td class="tabmin">&nbsp;</td>
-							<td id="tab_commands" class="taboff">Commands</td>
-							<td class="tabmin">&nbsp;</td>
-							<td id="tab_xml" class="taboff">XML</td>
-							<td class="tabmax">
-							</td>
-						</tr>
-					</table>
-				</td>
-			</tr>
-			<tr>
-				<td height="99%" colspan=2 id="content_area">
-				</td>
-			</tr>
-		</table>
-		<div id="content_blocks" class="content"></div>
-		<pre id="content_commands" class="content"></pre>
-		<textarea id="content_xml" class="content" wrap="off"></textarea>
+		<header>
+			<h1>
+				<img src="res/image/command-blocky.png"/>
+				Command-Blockly</h1>
+			<hr/>
+			<nav>
+				<a href="#blocks" id="tab_blocks">Blocks</a>
+				<a href="#commands" id="tab_commands" class="active">Commands</a>
+			</nav>
+			<hr/>
+			<nav>
+				<select id="language"></select>
+			</nav>
+		</header>
+		<section id="content_area">
+			<div id="content_blocks"></div>
+			<textarea id="content_commands"></textarea>
+		</section>
+		<div id="blocklyDiv" style="position: absolute"></div>
 		<xml id="toolbox" style="display: none">
 			<category id="catLogic" colour="210">
 				<block type="controls_if"></block>

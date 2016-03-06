@@ -54,7 +54,7 @@ Code.changeLanguage = function() {
     var text = Blockly.Xml.domToText(xml);
     window.sessionStorage.loadOnceBlocks = text;
   }
-  var languageMenu = document.getElementById('languageMenu');
+  var languageMenu = document.getElementById('language');
   var newLang = encodeURIComponent(
       languageMenu.options[languageMenu.selectedIndex].value);
   var search = window.location.search;
@@ -97,39 +97,21 @@ Code.getBBox_ = function(element) {
 
 Code.LANG = Code.getLang();
 
-Code.TABS_ = ['blocks', 'commands', 'xml'];
+Code.TABS_ = ['blocks', 'commands'];
 
 Code.selected = 'blocks';
 
 Code.tabClick = function(clickedName) {
-  if (document.getElementById('tab_xml').className == 'tabon') {
-    var xmlTextarea = document.getElementById('content_xml');
-    var xmlText = xmlTextarea.value;
-    var xmlDom = null;
-    try {
-      xmlDom = Blockly.Xml.textToDom(xmlText);
-    } catch (e) {
-      var q =
-          window.confirm(MSG['badXml'].replace('%1', e));
-      if (!q) {
-        return;
-      }
-    }
-    if (xmlDom) {
-      Code.workspace.clear();
-      Blockly.Xml.domToWorkspace(Code.workspace, xmlDom);
-    }
-  }
-  if (document.getElementById('tab_blocks').className == 'tabon') {
+  if (document.getElementById('tab_blocks').className == 'active') {
     Code.workspace.setVisible(false);
   }
   for (var i = 0; i < Code.TABS_.length; i++) {
     var name = Code.TABS_[i];
-    document.getElementById('tab_' + name).className = 'taboff';
+    document.getElementById('tab_' + name).className = '';
     document.getElementById('content_' + name).style.visibility = 'hidden';
   }
   Code.selected = clickedName;
-  document.getElementById('tab_' + clickedName).className = 'tabon';
+  document.getElementById('tab_' + clickedName).className = 'active';
   document.getElementById('content_' + clickedName).style.visibility =
       'visible';
   Code.renderContent();
@@ -149,11 +131,10 @@ Code.renderContent = function() {
     xmlTextarea.focus();
   } else if (content.id == 'content_commands') {
     var code = Blockly.Commands.workspaceToCode(Code.workspace);
-    content.textContent = code;
+    content.value = code;
 /*    if (typeof prettyPrintOne == 'function') {
       code = content.innerHTML;
       code = prettyPrintOne(code, 'mc');
-      content.innerHTML = code;
     }*/
   }
 };
@@ -167,7 +148,7 @@ Code.init = function() {
     var bBox = Code.getBBox_(container);
     for (var i = 0; i < Code.TABS_.length; i++) {
       var el = document.getElementById('content_' + Code.TABS_[i]);
-      el.style.top = bBox.y + 'px';
+      el.style.top = 0 + 'px';
       el.style.left = bBox.x + 'px';
       // Height and width need to be set, read back, then set again to
       // compensate for scrollbars.
@@ -176,17 +157,11 @@ Code.init = function() {
       el.style.width = bBox.width + 'px';
       el.style.width = (2 * bBox.width - el.offsetWidth) + 'px';
     }
-    // Make the 'Blocks' tab line up with the toolbox.
-    if (Code.workspace && Code.workspace.toolbox_.width) {
-      document.getElementById('tab_blocks').style.minWidth =
-          (Code.workspace.toolbox_.width - 38) + 'px';
-          // Account for the 19 pixel margin and on each side.
-    }
   };
   onresize();
   window.addEventListener('resize', onresize, false);
 
-  var toolbox = document.getElementById('toolbox');
+  var toolbox = Toolbox.Build(Toolbox.Tree);
   Code.workspace = Blockly.inject('content_blocks',
       {grid:
           {spacing: 25,
@@ -242,7 +217,7 @@ Code.initLanguage = function() {
   };
   languages.sort(comp);
   // Populate the language selection menu.
-  var languageMenu = document.getElementById('languageMenu');
+  var languageMenu = document.getElementById('language');
   languageMenu.options.length = 0;
   for (var i = 0; i < languages.length; i++) {
     var tuple = languages[i];
@@ -284,7 +259,7 @@ Code.discard = function() {
   }
 };
 
-document.write('<script src="locale/' + Code.LANG + '.js"></script>\n');
+document.write('<script src="res/script/locale/' + Code.LANG + '.js"></script>\n');
 document.write('<script src="deps/blockly/msg/js/' + Code.LANG + '.js"></script>\n');
 
 window.addEventListener('load', Code.init);

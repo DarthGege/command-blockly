@@ -1,116 +1,108 @@
-@padding: 4px;
-@margin: 8px;
-@height: 32px;
-@radius: 2px;
+@padding: 4px ;
+@margin: 8px ;
+@height: 32px ;
+@radius: 2px ;
 
-@spacing: 5px;
-@background-color: #f9f9f9;
-@border-color: #bbb;
+@spacing: 5px ;
+@background-color: #f9f9f9 ;
+@border-color: #bbb ;
 
 html, body {
-  width: 100%; height: 100%;
-  margin: 0; padding: 0;
+  width: 100% ; height: 100% ;
+  margin: 0 ; padding: 0 ;
 }
 
 body {
-  display: flex; flex-direction: column;
-  font-family: sans-serif;
-  background-color: @background-color;
+  display: flex ; flex-direction: column ;
+  font-family: sans-serif ;
+  background-color: @background-color ;
 }
 
 header {
-  display: flex; flex-direction: row;
-  border-bottom: 1px solid @border-color;
+  display: flex ; flex-direction: row ;
+  border-bottom: 1px solid @border-color ;
   h1 {
     img { 
-      vertical-align: top;
-      width: @height;
-      height: @height;
+      vertical-align: top ;
+      width: @height ;
+      height: @height ;
     }
-    margin: @margin;
-    height: @height;
-    font-weight: bold; font-size: @height; line-height: @height;
+    margin: @margin ;
+    height: @height ;
+    font-weight: bold ; font-size: @height ; line-height: @height ;
   }
   hr {
-    flex-grow: 1;
-    border: none;
+    flex-grow: 1 ;
+    border: none ;
   }
   nav {
-    display:flex;
+    display: flex ;
     a, select {
-      outline:none;
-      border: 1px solid #BBB; border-radius: @radius @radius 0 0;
-      background-color: #EEE; color: #000;
-      text-decoration: none;
+      outline: none ;
+      border: 1px solid #BBB ; border-radius: @radius @radius 0 0 ;
+      background-color: #EEE ; color: #000 ;
+      text-decoration: none ;
       &:hover {
-        background-color: #DDD;
+        background-color: #DDD ;
       }
       &.active {
-        border-bottom: 1px solid #fff;
-        background-color: #fff;
+        border-bottom: 1px solid #fff ;
+        background-color: #fff ;
       }
-      cursor: pointer;
+      cursor: pointer ;
     }
     a {
-      margin: @margin @margin -1px 0; padding: @padding @padding @margin+@padding @padding;
+      margin: @margin @margin -1px 0 ; padding: @padding @padding @margin+@padding @padding ;
     }
-    /* OK */
     select{
-      margin: @margin @margin @margin 0;
-      margin-bottom: @margin;
-      border-radius: @radius;
+      margin: @margin @margin @margin 0 ;
+      border-radius: @radius ;
     }
   }
 }
 
-select{
-  padding: @padding @padding+@height @padding @padding;
-  line-height: @height;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  background-image:
-    linear-gradient(45deg, transparent 50%, gray 50%),
-    linear-gradient(135deg, gray 50%, transparent 50%),
-    linear-gradient(to right, #ccc, #ccc);
-  background-position:
-    ~"calc(100% - 16px) 12px",
-    ~"calc(100% - 8px) 12px",
-    ~"calc(100% - 0px) 0";
-  background-size:
-    8px 8px,
-    8px 8px,
-    @height @height;
-  background-repeat: no-repeat;
+select {
+  padding: @padding @padding+@height @padding @padding ;
+  line-height: @height - @padding * 2 - 2px;
+  -webkit-box-sizing: border-box ;
+  -moz-box-sizing: border-box ;
+  box-sizing: border-box ;
+  -webkit-appearance: none ;
+  -moz-appearance: none ;
+  background-image: linear-gradient(45deg, transparent 50%, gray 50%), linear-gradient(135deg, gray 50%, transparent 50%), linear-gradient(to right, #ccc, #ccc) ;
+  background-position: ~"calc(100% - 16px) 12px", ~"calc(100% - 8px) 12px", ~"calc(100% - 0px) 0" ;
+  background-size: 8px 8px, 8px 8px, @height @height ;
+  background-repeat: no-repeat ;
   &:focus {
-    outline: 0;
+    outline: 0 ;
   }
 }
-section {position:relative;}
+section {
+  position: relative ;
+  overflow: hidden ;
+  flex-grow: 1 ;
+}
 #content_commands {
-  margin: 0;padding: 0.5em;
-  width:calc(100% - 1em); min-width:calc(100% - 1em); max-width:calc(100% - 1em);
-  height:100%;
-  background:#fff;
-  border:none;
-  border-bottom: 1px solid #bbb;
-  height:auto;
+  margin: 0 ; padding: 0.5em ;
+  width: ~"calc(100% - 1em)" ; height: ~"calc(100% - 1em)" ;
+  background: #fff ;
+  border: none ;
+  resize: none ;
 }
 #content_blocks {
-  margin: 0;padding: 0.5em;
-  width:calc(100% - 1em); min-width:calc(100% - 1em); max-width:calc(100% - 1em);
-  height:100%;
-  background:#fff;
-  border:none;
-  border-bottom: 1px solid #bbb;
-  height:auto;
+  position: absolute ; top: 0 ;
+  margin: 0 ; padding: 0 ;
+  width: 100% ; height: 100% ;
+  background: #fff ;
+  border: none ;
+  resize: none ;
 }
-html[dir="RTL"] {
-  header nav {
-    a, select {
-      margin: @margin 0 -1px @margin;
-    }
+
+html[dir="RTL"] header nav {
+  a {
+    margin: @margin 0 -1px @margin ;
+  }
+  select {
+    margin: @margin 0 @margin @margin ;
   }
 }

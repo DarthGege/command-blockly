@@ -8,8 +8,16 @@ Toolbox.Build=function(nodes){
   var tag = "";
   var args = "";
   var childs = "";
+  var first = true;
   nodes.forEach(function(node) {
-    if(typeof node == "string") tag = node;
+    if(typeof node == "string") {
+      if(first) {
+        first=false;
+        tag = node;
+      } else {
+        childs = childs + node;
+      }
+    }
     else if(typeof node == "undefined") {} 
     else if(node instanceof Array) childs = childs + Toolbox.Build(node);
     else for (var key in node) args = args+' '+key+'="'+node[key]+'"';
@@ -27,14 +35,37 @@ Toolbox.Tree =
         ['block',{'type':'ps_mode'}],
       ],
       ['block',{'type':'stat_text_input'}],
-      ['category',{'name':'NBT'},
-        ['block',{'type':'logic_compare'}],
-        ['block',{'type':'logic_operation'}],
-        ['block',{'type':'logic_boolean'}],
-      ],
+    ],
+    ['category',{'name':'NBT'},
+      ['block',{'type':'nbt_byte'}],
+      ['block',{'type':'nbt_short'}],
+      ['block',{'type':'nbt_int'}],
+      ['block',{'type':'nbt_long'}],
+      ['block',{'type':'nbt_float'}],
+      ['block',{'type':'nbt_double'}],
+      ['block',{'type':'nbt_string'}],
+      ['block',{'type':'nbt_compound'}],
+      ['block',{'type':'nbt_compound_name'}],
+      ['block',{'type':'nbt_list'}],
+      ['block',{'type':'nbt_list_byte'}],
+      ['block',{'type':'nbt_list_short'}],
+      ['block',{'type':'nbt_list_int'}],
+      ['block',{'type':'nbt_list_long'}],
+      ['block',{'type':'nbt_list_float'}],
+      ['block',{'type':'nbt_list_double'}],
+      ['block',{'type':'nbt_list_string'}],
+      ['block',{'type':'nbt_list_compound'}],
     ],
     ['category',{'name':'Command'},
-      ['block',{'type':'command_achievement'}],
+      ['block',{'type':'command_achievement'},
+        ['value',{'name':'STAT'},
+          ['shadow',{'type':'stat_text_input'},
+            ['field',{'name':'STAT'},
+              '*',
+            ],
+          ],
+        ],
+      ],
       ['block',{'type':'command_blockdata'}],
     ],
   ]

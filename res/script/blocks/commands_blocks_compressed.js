@@ -15,7 +15,33 @@ Blockly.Blocks['simple_command'] = {
   }
 };
 
-//Common Structures 
+//Common Structures
+
+Blockly.Blocks['nbt_compound'] = {
+  init: function() {
+    this.appendStatementInput("ELEMENTS")
+        .setCheck("nbt_compound_name")
+        .appendField(new Blockly.FieldImage("res/image/nbt_compound.png", 16, 16, "*"));
+    this.setOutput(true, "nbt_compound");
+    this.setColour(230);
+    this.setTooltip('');
+    this.setHelpUrl('http://www.example.com/');
+  }
+};
+
+Blockly.Blocks['nbt_compound_name'] = {
+  init: function() {
+    this.appendValueInput("DATA")
+        .setCheck(["nbt_byte", "nbt_short", "nbt_int", "nbt_long", "nbt_float", "nbt_double", "nbt_string", "nbt_compound", "nbt_list"])
+        .appendField(new Blockly.FieldTextInput("name"), "NAME");
+    this.setPreviousStatement(true, "nbt_compound_name");
+    this.setNextStatement(true, "nbt_compound_name");
+    this.setColour(230);
+    this.setTooltip('');
+    this.setHelpUrl('http://www.example.com/');
+  }
+};
+
 Blockly.Blocks['stat_text_input'] = {
   init: function() {
     this.appendDummyInput()

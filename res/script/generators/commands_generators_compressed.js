@@ -2,33 +2,17 @@
 'use strict';
 
 goog.provide('Blockly.Commands');
-
 goog.require('Blockly.Generator');
 
 Blockly.Commands = new Blockly.Generator('Commands');
 
-/**
- * List of illegal variable names.
- * This is not intended to be a security feature.  Blockly is 100% client-side,
- * so bypassing this list is trivial.  This is intended to prevent users from
- * accidentally clobbering a built-in object or function.
- * @private
- */
-Blockly.Commands.addReservedWords(
-    // import keyword
-    // print ','.join(keyword.kwlist)
-    // http://docs.python.org/reference/lexical_analysis.html#keywords
-    'and,as,assert,break,class,continue,def,del,elif,else,except,exec,finally,for,from,global,if,import,in,is,lambda,not,or,pass,print,raise,return,try,while,with,yield,' +
-    //http://docs.python.org/library/constants.html
-    'True,False,None,NotImplemented,Ellipsis,__debug__,quit,exit,copyright,license,credits,' +
-    // http://docs.python.org/library/functions.html
-    'abs,divmod,input,open,staticmethod,all,enumerate,int,ord,str,any,eval,isinstance,pow,sum,basestring,execfile,issubclass,print,super,bin,file,iter,property,tuple,bool,filter,len,range,type,bytearray,float,list,raw_input,unichr,callable,format,locals,reduce,unicode,chr,frozenset,long,reload,vars,classmethod,getattr,map,repr,xrange,cmp,globals,max,reversed,zip,compile,hasattr,memoryview,round,__import__,complex,hash,min,set,apply,delattr,help,next,setattr,buffer,dict,hex,object,slice,coerce,dir,id,oct,sorted,intern');
+Blockly.Commands.INFINITE_LOOP_TRAP = null;
+Blockly.Commands.STATEMENT_PREFIX = null;
+Blockly.Commands.INDENT = '  ';
+Blockly.Commands.RESERVED_WORDS_ = '';
+Blockly.Commands.FUNCTION_NAME_PLACEHOLDER_ = '{leCUI8hutHZI4480Dc}';
 
-/**
- * Order of operation ENUMs.
- * http://docs.python.org/reference/expressions.html#summary
- */
-Blockly.Commands.ORDER_ATOMIC = 0;            // 0 "" ...
+Blockly.Commands.ORDER_ATOMIC = 99;            // 0 "" ...
 Blockly.Commands.ORDER_COLLECTION = 1;        // tuples, lists, dictionaries
 Blockly.Commands.ORDER_STRING_CONVERSION = 1; // `expression...`
 Blockly.Commands.ORDER_MEMBER = 2;            // . []
@@ -43,7 +27,6 @@ Blockly.Commands.ORDER_BITWISE_AND = 8;       // &
 Blockly.Commands.ORDER_BITWISE_XOR = 9;       // ^
 Blockly.Commands.ORDER_BITWISE_OR = 10;       // |
 Blockly.Commands.ORDER_RELATIONAL = 11;       // in, not in, is, is not,
-                                            //     <, <=, >, >=, <>, !=, ==
 Blockly.Commands.ORDER_LOGICAL_NOT = 12;      // not
 Blockly.Commands.ORDER_LOGICAL_AND = 13;      // and
 Blockly.Commands.ORDER_LOGICAL_OR = 14;       // or
@@ -51,79 +34,145 @@ Blockly.Commands.ORDER_CONDITIONAL = 15;      // if else
 Blockly.Commands.ORDER_LAMBDA = 16;           // lambda
 Blockly.Commands.ORDER_NONE = 99;             // (...)
 
-/**
- * Empty loops or conditionals are not allowed in Commands.
- */
-Blockly.Commands.PASS = '  pass\n';
-
-/**
- * Initialise the database of variable names.
- * @param {!Blockly.Workspace} workspace Workspace to generate code from.
- */
-Blockly.Commands.init = function(workspace) {
-  // Create a dictionary of definitions to be printed before the code.
-  Blockly.Commands.definitions_ = Object.create(null);
-  // Create a dictionary mapping desired function names in definitions_
-  // to actual function names (to avoid collisions with user functions).
-  Blockly.Commands.functionNames_ = Object.create(null);
-
-  if (!Blockly.Commands.variableDB_) {
-    Blockly.Commands.variableDB_ =
-        new Blockly.Names(Blockly.Commands.RESERVED_WORDS_);
-  } else {
-    Blockly.Commands.variableDB_.reset();
+Blockly.Commands.workspaceToCode = function(workspace) {
+  if (!workspace)
+    workspace = Blockly.getMainWorkspace();
+  var code = [];
+  Blockly.Commands.init(workspace);
+  var blocks = workspace.getTopBlocks(true);
+  for (var x = 0, block; block = blocks[x]; x++) {
+    var line = Blockly.Commands.blockToCode(block);
+    if (goog.isArray(line)) line = line[0];
+    if (line) code.push(line);
   }
-
+  code = code.join('\n');
+  code = Blockly.Commands.finish(code);
+  // Final scrubbing of whitespace.
+  code = code.replace(/^\s+\n/, '');
+  code = code.replace(/\n\s+$/, '\n');
+  code = code.replace(/[ \t]+\n/g, '\n');
+  return code;
+};
+Blockly.Commands.init = function(workspace) {
+  Blockly.Commands.definitions_ = Object.create(null);
+  Blockly.Commands.functionNames_ = Object.create(null);
+  if (!Blockly.Commands.variableDB_)
+    Blockly.Commands.variableDB_ = new Blockly.Names(Blockly.Commands.RESERVED_WORDS_);
+  else
+    Blockly.Commands.variableDB_.reset();
   var defvars = [];
   var variables = Blockly.Variables.allVariables(workspace);
-  for (var i = 0; i < variables.length; i++) {
-    defvars[i] = Blockly.Commands.variableDB_.getName(variables[i],
-        Blockly.Variables.NAME_TYPE) + ' = None';
-  }
+  for (var i = 0; i < variables.length; i++)
+    defvars[i] = Blockly.Commands.variableDB_.getName(variables[i], Blockly.Variables.NAME_TYPE) + ' = None';
   Blockly.Commands.definitions_['variables'] = defvars.join('\n');
 };
-
-/**
- * Prepend the generated code with the variable definitions.
- * @param {string} code Generated code.
- * @return {string} Completed code.
- */
-Blockly.Commands.finish = function(code) {
-  // Convert the definitions dictionary into a list.
-  var imports = [];
-  var definitions = [];
-  for (var name in Blockly.Commands.definitions_) {
-    var def = Blockly.Commands.definitions_[name];
-    if (def.match(/^(from\s+\S+\s+)?import\s+\S+/)) {
-      imports.push(def);
-    } else {
-      definitions.push(def);
-    }
+Blockly.Commands.valueToCode = function(block, name, order) {
+  if (isNaN(order))
+    goog.asserts.fail('Expecting valid order from block "%s".', block.type);
+  var targetBlock = block.getInputTargetBlock(name);
+  if (!targetBlock)
+    return '';
+  var tuple = this.blockToCode(targetBlock);
+  if (tuple === '')
+    return '';
+  goog.asserts.assertArray(tuple, 'Expecting tuple from value block "%s".', targetBlock.type);
+  var code = tuple[0];
+  var innerOrder = tuple[1];
+  if (isNaN(innerOrder))
+    goog.asserts.fail('Expecting valid order from value block "%s".', targetBlock.type);
+  if (code && order <= innerOrder) {
+    if (order == innerOrder && (order == 0 || order == 99)) {}
+    else
+      code = '(' + code + ')';
   }
-  // Clean up temporary data.
-  delete Blockly.Commands.definitions_;
-  delete Blockly.Commands.functionNames_;
-  Blockly.Commands.variableDB_.reset();
-  var allDefs = imports.join('\n') + '\n\n' + definitions.join('\n\n');
-  return allDefs.replace(/\n\n+/g, '\n\n').replace(/\n*$/, '\n\n\n') + code;
+  return code;
 };
-
-/**
- * Naked values are top-level blocks with outputs that aren't plugged into
- * anything.
- * @param {string} line Line of generated code.
- * @return {string} Legal line of code.
- */
-Blockly.Commands.scrubNakedValue = function(line) {
-  return line + '\n';
+Blockly.Commands.statementToCode = function(block, name) {
+  var targetBlock = block.getInputTargetBlock(name);
+  var code = this.blockToCode(targetBlock);
+  goog.asserts.assertString(code, 'Expecting code from statement block "%s".',
+      targetBlock && targetBlock.type);
+  return code;
 };
-
-/**
- * Encode a string as a properly escaped Commands string, complete with quotes.
- * @param {string} string Text to encode.
- * @return {string} Commands string.
- * @private
- */
+Blockly.Commands.blockToCode = function(block) {
+  if (!block)
+    return '';
+  if (block.disabled)
+    return Blockly.Commands.blockToCode(block.getNextBlock());
+  var func = Blockly.Commands[block.type];
+  goog.asserts.assertFunction(func, 'Language "%s" does not know how to generate code for block type "%s".', Blockly.Commands.name_, block.type);
+  var code = func.call(block, block); // call to block dependent functions.
+  if (goog.isArray(code)) {
+    return [Blockly.Commands.scrub_(block, code[0]), code[1]];
+  } else if (goog.isString(code)) {
+    if (Blockly.Commands.STATEMENT_PREFIX)
+      code = Blockly.Commands.STATEMENT_PREFIX.replace(/%1/g, '\'' + block.id + '\'') + code;
+    return Blockly.Commands.scrub_(block, code);
+  } else if (code === null) {
+    return '';
+  } else {
+    goog.asserts.fail('Invalid code generated: %s', code);
+  }
+};
+Blockly.Commands.scrub_ = function(block, code) {
+  var commentCode = '';
+  if (!block.outputConnection || !block.outputConnection.targetConnection) {
+    var comment = block.getCommentText();
+    if (comment)
+      commentCode += Blockly.Commands.prefixLines(comment, '# ') + '\n';
+    for (var x = 0; x < block.inputList.length; x++)
+      if (block.inputList[x].type == Blockly.INPUT_VALUE) {
+        var childBlock = block.inputList[x].connection.targetBlock();
+        if (childBlock) {
+          var comment = Blockly.Commands.allNestedComments(childBlock);
+          if (comment)
+            commentCode += Blockly.Commands.prefixLines(comment, '# ');
+        }
+      }
+  }
+  var nextBlock = block.nextConnection && block.nextConnection.targetBlock();
+  var nextCode = Blockly.Commands.blockToCode(nextBlock);
+  return commentCode + code + nextCode;
+};
+Blockly.Commands.prefixLines = function(text, prefix) {
+  return prefix + text.replace(/\n(.)/g, '\n' + prefix + '$1');
+};
+Blockly.Commands.allNestedComments = function(block) {
+  var comments = [];
+  var blocks = block.getDescendants();
+  for (var x = 0; x < blocks.length; x++) {
+    var comment = blocks[x].getCommentText();
+    if (comment)
+      comments.push(comment);
+  }
+  // Append an empty string to create a trailing line break when joined.
+  if (comments.length)
+    comments.push('');
+  return comments.join('\n');
+};
+Blockly.Commands.provideFunction_ = function(desiredName, code) {
+  if (!this.definitions_[desiredName]) {
+    var functionName =
+        this.variableDB_.getDistinctName(desiredName, this.NAME_TYPE);
+    this.functionNames_[desiredName] = functionName;
+    this.definitions_[desiredName] = code.join('\n').replace(
+        this.FUNCTION_NAME_PLACEHOLDER_REGEXP_, functionName);
+  }
+  return this.functionNames_[desiredName];
+};
+Blockly.Commands.addReservedWords = function(words) {
+  this.RESERVED_WORDS_ += words + ',';
+};
+Blockly.Commands.addLoopTrap = function(branch, id) {
+  if (Blockly.Commands.INFINITE_LOOP_TRAP) {
+    branch = Blockly.Commands.INFINITE_LOOP_TRAP.replace(/%1/g, '\'' + id + '\'') + branch;
+  }
+  if (this.STATEMENT_PREFIX) {
+    branch += this.prefixLines(this.STATEMENT_PREFIX.replace(/%1/g,
+        '\'' + id + '\''), this.INDENT);
+  }
+  return branch;
+};
 Blockly.Commands.quote_ = function(string) {
   // TODO: This is a quick hack.  Replace with goog.string.quote
   string = string.replace(/\\/g, '\\\\')
@@ -132,42 +181,21 @@ Blockly.Commands.quote_ = function(string) {
                  .replace(/'/g, '\\\'');
   return '\'' + string + '\'';
 };
-
-/**
- * Common tasks for generating Commands from blocks.
- * Handles comments for the specified block and any connected value blocks.
- * Calls any statements following this block.
- * @param {!Blockly.Block} block The current block.
- * @param {string} code The Commands code created for this block.
- * @return {string} Commands code with comments and subsequent blocks added.
- * @private
- */
-Blockly.Commands.scrub_ = function(block, code) {
-  var commentCode = '';
-  // Only collect comments for blocks that aren't inline.
-  if (!block.outputConnection || !block.outputConnection.targetConnection) {
-    // Collect comment for this block.
-    var comment = block.getCommentText();
-    if (comment) {
-      commentCode += Blockly.Commands.prefixLines(comment, '# ') + '\n';
-    }
-    // Collect comments for all value arguments.
-    // Don't collect comments for nested statements.
-    for (var x = 0; x < block.inputList.length; x++) {
-      if (block.inputList[x].type == Blockly.INPUT_VALUE) {
-        var childBlock = block.inputList[x].connection.targetBlock();
-        if (childBlock) {
-          var comment = Blockly.Commands.allNestedComments(childBlock);
-          if (comment) {
-            commentCode += Blockly.Commands.prefixLines(comment, '# ');
-          }
-        }
-      }
-    }
+Blockly.Commands.finish = function(code) {
+  var imports = [];
+  var definitions = [];
+  for (var name in Blockly.Commands.definitions_) {
+    var def = Blockly.Commands.definitions_[name];
+    if (def.match(/^(from\s+\S+\s+)?import\s+\S+/))
+      imports.push(def);
+    else
+      definitions.push(def);
   }
-  var nextBlock = block.nextConnection && block.nextConnection.targetBlock();
-  var nextCode = Blockly.Commands.blockToCode(nextBlock);
-  return commentCode + code + nextCode;
+  delete Blockly.Commands.definitions_;
+  delete Blockly.Commands.functionNames_;
+  Blockly.Commands.variableDB_.reset();
+  var allDefs = imports.join('\n') + '\n\n' + definitions.join('\n\n');
+  return allDefs.replace(/\n\n+/g, '\n\n').replace(/\n*$/, '\n\n\n') + code;
 };
 
 //Structure to accept commands
@@ -186,7 +214,6 @@ Blockly.Commands['stat_text_input'] = function(block) {
   // TODO: Change ORDER_NONE to the correct strength.
   return [code, Blockly.Commands.ORDER_NONE];
 };
-
 Blockly.Commands['player_selector'] = function(block) {
   var dropdown_name = block.getFieldValue('NAME');
   var value_name = Blockly.Commands.valueToCode(block, 'NAME', Blockly.Commands.ORDER_NONE);
@@ -194,13 +221,29 @@ Blockly.Commands['player_selector'] = function(block) {
   if(value_name != "") code = code + "[" + value_name + "]";
   return [code, Blockly.Commands.ORDER_NONE];
 };
-
 Blockly.Commands['ps_mode'] = function(block) {
   var dropdown_name = block.getFieldValue('NAME');
   var value_name = Blockly.Commands.valueToCode(block, 'NAME', Blockly.Commands.ORDER_NONE);
   var code = 'm=' + dropdown_name;
   if(value_name != "") code = code + ',' + value_name;
   return [code, Blockly.Commands.ORDER_NONE];
+};
+
+//nbt
+Blockly.Commands['nbt_compound'] = function(block) {
+  var statements_name = Blockly.Commands.statementToCode(block, 'ELEMENTS');
+  // TODO: Assemble Python into code variable.
+  var code = '{'+statements_name+'}';
+  // TODO: Change ORDER_NONE to the correct strength.
+  return [code, Blockly.Commands.ORDER_NONE];
+};
+Blockly.Commands['nbt_compound_name'] = function(block) {
+  var text_name = block.getFieldValue('NAME');
+  var value_data = Blockly.Commands.valueToCode(block, 'DATA', Blockly.Commands.ORDER_NONE);
+
+  // TODO: Assemble Python into code variable.
+  var code = '"'+text_name+'":'+value_data;
+  return code;
 };
 
 //commands
@@ -213,7 +256,6 @@ Blockly.Commands['command_achievement'] = function(block) {
   var code = 'achievement '+dropdown_action+' '+value_stat+value_players;
   return [code, Blockly.Commands.ORDER_NONE];
 };
-
 Blockly.Commands['command_blockdata'] = function(block) {
   var value_coords = Blockly.Commands.valueToCode(block, 'COORDS', Blockly.Commands.ORDER_NONE);
   var value_nbt = Blockly.Commands.valueToCode(block, 'NBT', Blockly.Commands.ORDER_NONE);

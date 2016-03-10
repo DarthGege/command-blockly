@@ -78,18 +78,21 @@ Blockly.Blocks['nbt_compound'] = {
 Blockly.Blocks['nbt_compound_null'] = {
   init: function() {
     this.appendDummyInput()
+        .appendField(new Blockly.FieldTextInput("name"), "NAME")
+        .appendField(':')
         .appendField(new Blockly.FieldImage("res/image/nbt_null.png", 16, 16, "n"));
     this.setPreviousStatement(true, ["nbt_compound_byte", "nbt_compound_short", "nbt_compound_int", "nbt_compound_long", "nbt_compound_float", "nbt_compound_double", "nbt_compound_string", "nbt_compound_compound", "nbt_compound_list"]);
     this.setColour(240);
+    this.setEditable(false);
     this.setTooltip('');
   }
 };
 Blockly.Blocks['nbt_compound_byte'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField(new Blockly.FieldImage("res/image/nbt_byte.png", 16, 16, "byte"))
         .appendField(new Blockly.FieldTextInput("name"), "NAME")
-        .appendField(': ')
+        .appendField(':')
+        .appendField(new Blockly.FieldImage("res/image/nbt_byte.png", 16, 16, "byte"))
         .appendField(new Blockly.FieldTextInput("0",Blockly.FieldTextInput.byteValidator), "VALUE");
     this.setPreviousStatement(true, ["nbt_compound_byte", "nbt_compound_short", "nbt_compound_int", "nbt_compound_long", "nbt_compound_float", "nbt_compound_double", "nbt_compound_string", "nbt_compound_compound", "nbt_compound_list"]);
     this.setNextStatement(true, ["nbt_compound_byte", "nbt_compound_short", "nbt_compound_int", "nbt_compound_long", "nbt_compound_float", "nbt_compound_double", "nbt_compound_string", "nbt_compound_compound", "nbt_compound_list"]);
@@ -101,9 +104,9 @@ Blockly.Blocks['nbt_compound_byte'] = {
 Blockly.Blocks['nbt_compound_short'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField(new Blockly.FieldImage("res/image/nbt_short.png", 16, 16, "short"))
         .appendField(new Blockly.FieldTextInput("name"), "NAME")
-        .appendField(': ')
+        .appendField(':')
+        .appendField(new Blockly.FieldImage("res/image/nbt_short.png", 16, 16, "short"))
         .appendField(new Blockly.FieldTextInput("0",Blockly.FieldTextInput.shortValidator), "VALUE");
     this.setPreviousStatement(true, ["nbt_compound_byte", "nbt_compound_short", "nbt_compound_int", "nbt_compound_long", "nbt_compound_float", "nbt_compound_double", "nbt_compound_string", "nbt_compound_compound", "nbt_compound_list"]);
     this.setNextStatement(true, ["nbt_compound_byte", "nbt_compound_short", "nbt_compound_int", "nbt_compound_long", "nbt_compound_float", "nbt_compound_double", "nbt_compound_string", "nbt_compound_compound", "nbt_compound_list"]);
@@ -115,9 +118,9 @@ Blockly.Blocks['nbt_compound_short'] = {
 Blockly.Blocks['nbt_compound_int'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField(new Blockly.FieldImage("res/image/nbt_int.png", 16, 16, "int"))
         .appendField(new Blockly.FieldTextInput("name"), "NAME")
-        .appendField(': ')
+        .appendField(':')
+        .appendField(new Blockly.FieldImage("res/image/nbt_int.png", 16, 16, "int"))
         .appendField(new Blockly.FieldTextInput("0",Blockly.FieldTextInput.intValidator), "VALUE");
     this.setPreviousStatement(true, ["nbt_compound_byte", "nbt_compound_short", "nbt_compound_int", "nbt_compound_long", "nbt_compound_float", "nbt_compound_double", "nbt_compound_string", "nbt_compound_compound", "nbt_compound_list"]);
     this.setNextStatement(true, ["nbt_compound_byte", "nbt_compound_short", "nbt_compound_int", "nbt_compound_long", "nbt_compound_float", "nbt_compound_double", "nbt_compound_string", "nbt_compound_compound", "nbt_compound_list"]);
@@ -129,9 +132,9 @@ Blockly.Blocks['nbt_compound_int'] = {
 Blockly.Blocks['nbt_compound_long'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField(new Blockly.FieldImage("res/image/nbt_long.png", 16, 16, "long"))
         .appendField(new Blockly.FieldTextInput("name"), "NAME")
-        .appendField(': ')
+        .appendField(':')
+        .appendField(new Blockly.FieldImage("res/image/nbt_long.png", 16, 16, "long"))
         .appendField(new Blockly.FieldTextInput("0",Blockly.FieldTextInput.longValidator), "VALUE");
     this.setPreviousStatement(true, ["nbt_compound_byte", "nbt_compound_short", "nbt_compound_int", "nbt_compound_long", "nbt_compound_float", "nbt_compound_double", "nbt_compound_string", "nbt_compound_compound", "nbt_compound_list"]);
     this.setNextStatement(true, ["nbt_compound_byte", "nbt_compound_short", "nbt_compound_int", "nbt_compound_long", "nbt_compound_float", "nbt_compound_double", "nbt_compound_string", "nbt_compound_compound", "nbt_compound_list"]);
@@ -143,9 +146,9 @@ Blockly.Blocks['nbt_compound_long'] = {
 Blockly.Blocks['nbt_compound_float'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField(new Blockly.FieldImage("res/image/nbt_float.png", 16, 16, "float"))
         .appendField(new Blockly.FieldTextInput("name"), "NAME")
-        .appendField(': ')
+        .appendField(':')
+        .appendField(new Blockly.FieldImage("res/image/nbt_float.png", 16, 16, "float"))
         .appendField(new Blockly.FieldTextInput("0",Blockly.FieldTextInput.floatValidator), "VALUE");
     this.setPreviousStatement(true, ["nbt_compound_byte", "nbt_compound_short", "nbt_compound_int", "nbt_compound_long", "nbt_compound_float", "nbt_compound_double", "nbt_compound_string", "nbt_compound_compound", "nbt_compound_list"]);
     this.setNextStatement(true, ["nbt_compound_byte", "nbt_compound_short", "nbt_compound_int", "nbt_compound_long", "nbt_compound_float", "nbt_compound_double", "nbt_compound_string", "nbt_compound_compound", "nbt_compound_list"]);
@@ -157,9 +160,9 @@ Blockly.Blocks['nbt_compound_float'] = {
 Blockly.Blocks['nbt_compound_double'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField(new Blockly.FieldImage("res/image/nbt_double.png", 16, 16, "double"))
         .appendField(new Blockly.FieldTextInput("name"), "NAME")
-        .appendField(': ')
+        .appendField(':')
+        .appendField(new Blockly.FieldImage("res/image/nbt_double.png", 16, 16, "double"))
         .appendField(new Blockly.FieldTextInput("0",Blockly.FieldTextInput.doubleValidator), "VALUE");
     this.setPreviousStatement(true, ["nbt_compound_byte", "nbt_compound_short", "nbt_compound_int", "nbt_compound_long", "nbt_compound_float", "nbt_compound_double", "nbt_compound_string", "nbt_compound_compound", "nbt_compound_list"]);
     this.setNextStatement(true, ["nbt_compound_byte", "nbt_compound_short", "nbt_compound_int", "nbt_compound_long", "nbt_compound_float", "nbt_compound_double", "nbt_compound_string", "nbt_compound_compound", "nbt_compound_list"]);
@@ -171,9 +174,9 @@ Blockly.Blocks['nbt_compound_double'] = {
 Blockly.Blocks['nbt_compound_string'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField(new Blockly.FieldImage("res/image/nbt_string.png", 16, 16, "string"))
         .appendField(new Blockly.FieldTextInput("name"), "NAME")
-        .appendField(': ')
+        .appendField(':')
+        .appendField(new Blockly.FieldImage("res/image/nbt_string.png", 16, 16, "string"))
         .appendField(new Blockly.FieldTextInput("value"), "VALUE");
     this.setPreviousStatement(true, ["nbt_compound_byte", "nbt_compound_short", "nbt_compound_int", "nbt_compound_long", "nbt_compound_float", "nbt_compound_double", "nbt_compound_string", "nbt_compound_compound", "nbt_compound_list"]);
     this.setNextStatement(true, ["nbt_compound_byte", "nbt_compound_short", "nbt_compound_int", "nbt_compound_long", "nbt_compound_float", "nbt_compound_double", "nbt_compound_string", "nbt_compound_compound", "nbt_compound_list"]);
@@ -185,9 +188,9 @@ Blockly.Blocks['nbt_compound_string'] = {
 Blockly.Blocks['nbt_compound_compound'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField(new Blockly.FieldImage("res/image/nbt_compound.png", 16, 16, "compound"))
         .appendField(new Blockly.FieldTextInput("name"), "NAME")
-        .appendField(': ');
+        .appendField(':')
+        .appendField(new Blockly.FieldImage("res/image/nbt_compound.png", 16, 16, "compound"));
     this.appendStatementInput("CHILDS")
         .setCheck(["nbt_compound_byte", "nbt_compound_short", "nbt_compound_int", "nbt_compound_long", "nbt_compound_float", "nbt_compound_double", "nbt_compound_string", "nbt_compound_compound", "nbt_compound_list", "nbt_compound_null"]);
     this.setPreviousStatement(true, ["nbt_compound_byte", "nbt_compound_short", "nbt_compound_int", "nbt_compound_long", "nbt_compound_float", "nbt_compound_double", "nbt_compound_string", "nbt_compound_compound", "nbt_compound_list"]);
@@ -200,9 +203,9 @@ Blockly.Blocks['nbt_compound_compound'] = {
 Blockly.Blocks['nbt_compound_list'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField(new Blockly.FieldImage("res/image/nbt_list.png", 16, 16, "list"))
         .appendField(new Blockly.FieldTextInput("name"), "NAME")
-        .appendField(': ');
+        .appendField(':')
+        .appendField(new Blockly.FieldImage("res/image/nbt_list.png", 16, 16, "list"));
     this.appendStatementInput("CHILDS")
         .setCheck(["nbt_list_byte", "nbt_list_short", "nbt_list_int", "nbt_list_long", "nbt_list_float", "nbt_list_double", "nbt_list_string", "nbt_list_compound", "nbt_list_list", "nbt_list_null"]);
     this.setPreviousStatement(true, ["nbt_compound_byte", "nbt_compound_short", "nbt_compound_int", "nbt_compound_long", "nbt_compound_float", "nbt_compound_double", "nbt_compound_string", "nbt_compound_compound", "nbt_compound_list"]);
@@ -215,6 +218,7 @@ Blockly.Blocks['nbt_compound_list'] = {
 Blockly.Blocks['nbt_list_null'] = {
   init: function() {
     this.appendDummyInput()
+        .appendField('-')
         .appendField(new Blockly.FieldImage("res/image/nbt_null.png", 16, 16, "n"));
     this.setPreviousStatement(true, "nbt_list_null");
     this.setColour(300);
@@ -225,6 +229,7 @@ Blockly.Blocks['nbt_list_null'] = {
 Blockly.Blocks['nbt_list_byte'] = {
   init: function() {
     this.appendDummyInput()
+        .appendField('-')
         .appendField(new Blockly.FieldImage("res/image/nbt_byte.png", 16, 16, "byte"))
         .appendField(new Blockly.FieldTextInput("0",Blockly.FieldTextInput.byteValidator), "VALUE");
     this.setPreviousStatement(true, "nbt_list_byte");
@@ -237,6 +242,7 @@ Blockly.Blocks['nbt_list_byte'] = {
 Blockly.Blocks['nbt_list_short'] = {
   init: function() {
     this.appendDummyInput()
+        .appendField('-')
         .appendField(new Blockly.FieldImage("res/image/nbt_short.png", 16, 16, "short"))
         .appendField(new Blockly.FieldTextInput("0",Blockly.FieldTextInput.shortValidator), "VALUE");
     this.setPreviousStatement(true, "nbt_list_short");
@@ -249,6 +255,7 @@ Blockly.Blocks['nbt_list_short'] = {
 Blockly.Blocks['nbt_list_int'] = {
   init: function() {
     this.appendDummyInput()
+        .appendField('-')
         .appendField(new Blockly.FieldImage("res/image/nbt_int.png", 16, 16, "int"))
         .appendField(new Blockly.FieldTextInput("0",Blockly.FieldTextInput.intValidator), "VALUE");
     this.setPreviousStatement(true, "nbt_list_int");
@@ -261,6 +268,7 @@ Blockly.Blocks['nbt_list_int'] = {
 Blockly.Blocks['nbt_list_long'] = {
   init: function() {
     this.appendDummyInput()
+        .appendField('-')
         .appendField(new Blockly.FieldImage("res/image/nbt_long.png", 16, 16, "long"))
         .appendField(new Blockly.FieldTextInput("0",Blockly.FieldTextInput.longValidator), "VALUE");
     this.setPreviousStatement(true, "nbt_list_long");
@@ -273,6 +281,7 @@ Blockly.Blocks['nbt_list_long'] = {
 Blockly.Blocks['nbt_list_float'] = {
   init: function() {
     this.appendDummyInput()
+        .appendField('-')
         .appendField(new Blockly.FieldImage("res/image/nbt_float.png", 16, 16, "float"))
         .appendField(new Blockly.FieldTextInput("0",Blockly.FieldTextInput.floatValidator), "VALUE");
     this.setPreviousStatement(true, "nbt_list_float");
@@ -285,6 +294,7 @@ Blockly.Blocks['nbt_list_float'] = {
 Blockly.Blocks['nbt_list_double'] = {
   init: function() {
     this.appendDummyInput()
+        .appendField('-')
         .appendField(new Blockly.FieldImage("res/image/nbt_double.png", 16, 16, "double"))
         .appendField(new Blockly.FieldTextInput("0",Blockly.FieldTextInput.doubleValidator), "VALUE");
     this.setPreviousStatement(true, "nbt_list_double");
@@ -297,6 +307,7 @@ Blockly.Blocks['nbt_list_double'] = {
 Blockly.Blocks['nbt_list_string'] = {
   init: function() {
     this.appendDummyInput()
+        .appendField('-')
         .appendField(new Blockly.FieldImage("res/image/nbt_string.png", 16, 16, "string"))
         .appendField(new Blockly.FieldTextInput("value"), "VALUE");
     this.setPreviousStatement(true, "nbt_list_string");
@@ -309,6 +320,7 @@ Blockly.Blocks['nbt_list_string'] = {
 Blockly.Blocks['nbt_list_compound'] = {
   init: function() {
     this.appendDummyInput()
+        .appendField('-')
         .appendField(new Blockly.FieldImage("res/image/nbt_compound.png", 16, 16, "compound"));
     this.appendStatementInput("CHILDS")
         .setCheck(["nbt_compound_byte", "nbt_compound_short", "nbt_compound_int", "nbt_compound_long", "nbt_compound_float", "nbt_compound_double", "nbt_compound_string", "nbt_compound_compound", "nbt_compound_list", "nbt_compound_null"]);
@@ -322,6 +334,7 @@ Blockly.Blocks['nbt_list_compound'] = {
 Blockly.Blocks['nbt_list_list'] = {
   init: function() {
     this.appendDummyInput()
+        .appendField('-')
         .appendField(new Blockly.FieldImage("res/image/nbt_list.png", 16, 16, "list"));
     this.appendStatementInput("CHILDS")
         .setCheck(["nbt_list_byte", "nbt_list_short", "nbt_list_int", "nbt_list_long", "nbt_list_float", "nbt_list_double", "nbt_list_string", "nbt_list_compound", "nbt_list_list", "nbt_list_null"]);

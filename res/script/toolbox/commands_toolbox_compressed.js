@@ -67,6 +67,7 @@ Toolbox.Tree =
         ],
       ],
       ['block',{'type':'command_blockdata'}],
+      ['block',{'type':'command_clear'}],
     ],
   ]
 

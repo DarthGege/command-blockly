@@ -264,3 +264,23 @@ Blockly.Commands['command_blockdata'] = function(block) {
   var code = 'blockdata '+value_coords+' '+value_nbt;
   return [code, Blockly.Commands.ORDER_NONE];
 };
+
+Blockly.Commands['command_clear'] = function(block) {
+  var value_player = Blockly.Commands.valueToCode(block, 'PLAYER', Blockly.Commands.ORDER_NONE);
+  var value_item = Blockly.Commands.valueToCode(block, 'ITEM', Blockly.Commands.ORDER_NONE);
+  var value_data = Blockly.Commands.valueToCode(block, 'DATA', Blockly.Commands.ORDER_NONE);
+  var value_maxcount = Blockly.Commands.valueToCode(block, 'MAXCOUNT', Blockly.Commands.ORDER_NONE);
+  var value_nbt = Blockly.Commands.valueToCode(block, 'NBT', Blockly.Commands.ORDER_NONE);
+  var code = "";
+  if(value_nbt != "") code = " "+value_nbt;
+  if(value_maxcount == "" && code != "") value_maxcount = "[maxCount]";
+  if(value_maxcount != "") code = " "+value_maxcount+code;
+  if(value_data == "" && code != "") value_data = "[data]";
+  if(value_data != "") code = " "+value_data+code;
+  if(value_item == "" && code != "") value_item = "[item]";
+  if(value_item != "") code = " "+value_item+code;
+  if(value_player == "" && code != "") value_player = "[player]";
+  if(value_player != "") code = " "+value_player+code;
+  code = "clear" + code;
+  return [code, Blockly.Commands.ORDER_NONE];
+};

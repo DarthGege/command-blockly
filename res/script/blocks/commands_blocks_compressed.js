@@ -121,3 +121,34 @@ Blockly.Blocks['command_blockdata'] = {
     this.setHelpUrl('http://www.example.com/');
   }
 };
+
+Blockly.Blocks['command_clear'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("clear");
+    this.appendValueInput("PLAYER")
+        .setCheck("player_selector")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("[player]");
+    this.appendValueInput("ITEM")
+        .setCheck("item_id")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("[item]");
+    this.appendValueInput("DATA")
+        .setCheck("item_data")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("[data]");
+    this.appendValueInput("MAXCOUNT")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("[maxCount]");
+    this.appendValueInput("NBT")
+        .setCheck("nbt_compound")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("[dataTag]");
+    this.setOutput(true, "command");
+    this.setColour(20);
+    this.setTooltip('');
+    this.setHelpUrl('http://www.example.com/');
+  }
+};

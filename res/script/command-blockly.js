@@ -162,6 +162,7 @@ Code.init = function() {
   window.addEventListener('resize', onresize, false);
 
   var toolbox = Toolbox.Build(Toolbox.Tree);
+  console.log(toolbox);
   Code.workspace = Blockly.inject('content_blocks',
       {grid:
           {spacing: 25,

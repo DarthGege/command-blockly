@@ -235,19 +235,149 @@ Blockly.Commands['ps_mode'] = function(block) {
 
 //nbt
 Blockly.Commands['nbt_compound'] = function(block) {
-  var statements_name = Blockly.Commands.statementToCode(block, 'ELEMENTS');
-  // TODO: Assemble Python into code variable.
-  var code = '{'+statements_name+'}';
-  // TODO: Change ORDER_NONE to the correct strength.
-  return [code, Blockly.Commands.ORDER_NONE];
+  var statements_childs = Blockly.Commands.statementToCode(block, 'CHILDS');
+  var code = '{'+statements_childs+'}';
+  return code;
 };
-Blockly.Commands['nbt_compound_name'] = function(block) {
+Blockly.Commands['nbt_compound_null'] = function(block) {
+  return "";
+};
+Blockly.Commands['nbt_compound_byte'] = function(block) {
   var text_name = block.getFieldValue('NAME');
-  var value_data = Blockly.Commands.valueToCode(block, 'DATA', Blockly.Commands.ORDER_NONE);
+  var text_value = block.getFieldValue('VALUE');
   var next = Blockly.Commands.nextblockToCode(block);
-  if(next != "") next=","+next;
-  // TODO: Assemble Python into code variable.
-  var code = '"'+text_name+'":'+value_data+next;
+  if (next != "") next=","+next;
+  var code = '"'+text_name+'":'+text_value+'b'+next;
+  return code;
+};
+Blockly.Commands['nbt_compound_short'] = function(block) {
+  var text_name = block.getFieldValue('NAME');
+  var text_value = block.getFieldValue('VALUE');
+  var next = Blockly.Commands.nextblockToCode(block);
+  if (next != "") next=","+next;
+  var code = '"'+text_name+'":'+text_value+'s'+next;
+  return code;
+};
+Blockly.Commands['nbt_compound_int'] = function(block) {
+  var text_name = block.getFieldValue('NAME');
+  var text_value = block.getFieldValue('VALUE');
+  var next = Blockly.Commands.nextblockToCode(block);
+  if (next != "") next=","+next;
+  var code = '"'+text_name+'":'+text_value+'i'+next;
+  return code;
+};
+Blockly.Commands['nbt_compound_long'] = function(block) {
+  var text_name = block.getFieldValue('NAME');
+  var text_value = block.getFieldValue('VALUE');
+  var next = Blockly.Commands.nextblockToCode(block);
+  if (next != "") next=","+next;
+  var code = '"'+text_name+'":'+text_value+'l'+next;
+  return code;
+};
+Blockly.Commands['nbt_compound_float'] = function(block) {
+  var text_name = block.getFieldValue('NAME');
+  var text_value = block.getFieldValue('VALUE');
+  var next = Blockly.Commands.nextblockToCode(block);
+  if (next != "") next=","+next;
+  var code = '"'+text_name+'":'+text_value+'f'+next;
+  return code;
+};
+Blockly.Commands['nbt_compound_double'] = function(block) {
+  var text_name = block.getFieldValue('NAME');
+  var text_value = block.getFieldValue('VALUE');
+  var next = Blockly.Commands.nextblockToCode(block);
+  if (next != "") next=","+next;
+  var code = '"'+text_name+'":'+text_value+'d'+next;
+  return code;
+};
+Blockly.Commands['nbt_compound_string'] = function(block) {
+  var text_name = block.getFieldValue('NAME');
+  var text_value = block.getFieldValue('VALUE');
+  var next = Blockly.Commands.nextblockToCode(block);
+  if (next != "") next=","+next;
+  var code = '"'+text_name+'":"'+text_value+'"'+next;
+  return code;
+};
+Blockly.Commands['nbt_compound_compound'] = function(block) {
+  var text_name = block.getFieldValue('NAME');
+  var statements_childs = Blockly.Commands.statementToCode(block, 'CHILDS');
+  var next = Blockly.Commands.nextblockToCode(block);
+  if (next != "") next = ","+next;
+  var code = '"'+text_name+'":{'+statements_childs+'}'+next;
+  return code;
+};
+Blockly.Commands['nbt_compound_list'] = function(block) {
+  var text_name = block.getFieldValue('NAME');
+  var statements_childs = Blockly.Commands.statementToCode(block, 'CHILDS');
+  var next = Blockly.Commands.nextblockToCode(block);
+  if (next != "") next = ","+next;
+  var code = '"'+text_name+'":['+statements_childs+']'+next;
+  return code;
+};
+Blockly.Commands['nbt_list_null'] = function(block) {
+  return "";
+};
+Blockly.Commands['nbt_list_byte'] = function(block) {
+  var text_value = block.getFieldValue('VALUE');
+  var next = Blockly.Commands.nextblockToCode(block);
+  if (next != "") next=","+next;
+  var code = text_value+'b'+next;
+  return code;
+};
+Blockly.Commands['nbt_list_short'] = function(block) {
+  var text_value = block.getFieldValue('VALUE');
+  var next = Blockly.Commands.nextblockToCode(block);
+  if (next != "") next=","+next;
+  var code = text_value+'s'+next;
+  return code;
+};
+Blockly.Commands['nbt_list_int'] = function(block) {
+  var text_value = block.getFieldValue('VALUE');
+  var next = Blockly.Commands.nextblockToCode(block);
+  if (next != "") next=","+next;
+  var code = text_value+'i'+next;
+  return code;
+};
+Blockly.Commands['nbt_list_long'] = function(block) {
+  var text_value = block.getFieldValue('VALUE');
+  var next = Blockly.Commands.nextblockToCode(block);
+  if (next != "") next=","+next;
+  var code = text_value+'l'+next;
+  return code;
+};
+Blockly.Commands['nbt_list_float'] = function(block) {
+  var text_value = block.getFieldValue('VALUE');
+  var next = Blockly.Commands.nextblockToCode(block);
+  if (next != "") next=","+next;
+  var code = text_value+'f'+next;
+  return code;
+};
+Blockly.Commands['nbt_list_double'] = function(block) {
+  var text_value = block.getFieldValue('VALUE');
+  var next = Blockly.Commands.nextblockToCode(block);
+  if (next != "") next=","+next;
+  var code = text_value+'d'+next;
+  return code;
+};
+Blockly.Commands['nbt_list_string'] = function(block) {
+  var text_value = block.getFieldValue('VALUE');
+  var next = Blockly.Commands.nextblockToCode(block);
+  if (next != "") next=","+next;
+  var code = '"'+text_value+'"'+next;
+  return code;
+};
+Blockly.Commands['nbt_list_compound'] = function(block) {
+  var statements_childs = Blockly.Commands.statementToCode(block, 'CHILDS');
+  var next = Blockly.Commands.nextblockToCode(block);
+  if (next != "") next = ","+next;
+  var code = '{'+statements_childs+'}'+next;
+  return code;
+};
+Blockly.Commands['nbt_list_list'] = function(block) {
+  var statements_childs = Blockly.Commands.statementToCode(block, 'CHILDS');
+  var next = Blockly.Commands.nextblockToCode(block);
+  if (next != "") next = ","+next;
+  var code = '['+statements_childs+']'+next;
   return code;
 };
 
@@ -263,19 +393,18 @@ Blockly.Commands['command_achievement'] = function(block) {
 };
 Blockly.Commands['command_blockdata'] = function(block) {
   var value_coords = Blockly.Commands.valueToCode(block, 'COORDS', Blockly.Commands.ORDER_NONE);
-  var value_nbt = Blockly.Commands.valueToCode(block, 'NBT', Blockly.Commands.ORDER_NONE);
+  var value_nbt = Blockly.Commands.statementToCode(block, 'NBT', Blockly.Commands.ORDER_NONE);
   if(value_coords == "") value_coords = "<x> <y> <z>";
   if(value_nbt == "") value_nbt = '<datatag>';
   var code = 'blockdata '+value_coords+' '+value_nbt;
   return [code, Blockly.Commands.ORDER_NONE];
 };
-
 Blockly.Commands['command_clear'] = function(block) {
   var value_player = Blockly.Commands.valueToCode(block, 'PLAYER', Blockly.Commands.ORDER_NONE);
   var value_item = Blockly.Commands.valueToCode(block, 'ITEM', Blockly.Commands.ORDER_NONE);
   var value_data = Blockly.Commands.valueToCode(block, 'DATA', Blockly.Commands.ORDER_NONE);
   var value_maxcount = Blockly.Commands.valueToCode(block, 'MAXCOUNT', Blockly.Commands.ORDER_NONE);
-  var value_nbt = Blockly.Commands.valueToCode(block, 'NBT', Blockly.Commands.ORDER_NONE);
+  var value_nbt = Blockly.Commands.statementToCode(block, 'NBT', Blockly.Commands.ORDER_NONE);
   var code = "";
   if(value_nbt != "") code = " "+value_nbt;
   if(value_maxcount == "" && code != "") value_maxcount = "[maxCount]";

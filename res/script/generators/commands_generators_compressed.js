@@ -114,6 +114,9 @@ Blockly.Commands.blockToCode = function(block) {
     goog.asserts.fail('Invalid code generated: %s', code);
   }
 };
+Blockly.Commands.nextblockToCode = function(block) {
+  return Blockly.Commands.blockToCode(block.getNextBlock());
+};
 Blockly.Commands.scrub_ = function(block, code) {
   var commentCode = '';
   if (!block.outputConnection || !block.outputConnection.targetConnection) {
@@ -131,8 +134,8 @@ Blockly.Commands.scrub_ = function(block, code) {
       }
   }
   var nextBlock = block.nextConnection && block.nextConnection.targetBlock();
-  var nextCode = Blockly.Commands.blockToCode(nextBlock);
-  return commentCode + code + nextCode;
+  //var nextCode = Blockly.Commands.blockToCode(nextBlock);
+  return commentCode + code;// + nextCode;
 };
 Blockly.Commands.prefixLines = function(text, prefix) {
   return prefix + text.replace(/\n(.)/g, '\n' + prefix + '$1');
@@ -201,8 +204,9 @@ Blockly.Commands.finish = function(code) {
 //Structure to accept commands
 Blockly.Commands['simple_command'] = function(block) {
   var value_command = Blockly.Commands.valueToCode(block, 'COMMAND', Blockly.Commands.ORDER_NONE);
+  var next = Blockly.Commands.nextblockToCode(block);
   var code = "";
-  if(value_command != "") code = '/'+value_command+"\n"; 
+  if(value_command != "") code = '/'+value_command+"\n"+next; 
   return code;
 };
 
@@ -240,9 +244,10 @@ Blockly.Commands['nbt_compound'] = function(block) {
 Blockly.Commands['nbt_compound_name'] = function(block) {
   var text_name = block.getFieldValue('NAME');
   var value_data = Blockly.Commands.valueToCode(block, 'DATA', Blockly.Commands.ORDER_NONE);
-
+  var next = Blockly.Commands.nextblockToCode(block);
+  if(next != "") next=","+next;
   // TODO: Assemble Python into code variable.
-  var code = '"'+text_name+'":'+value_data;
+  var code = '"'+text_name+'":'+value_data+next;
   return code;
 };
 

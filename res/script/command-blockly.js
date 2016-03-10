@@ -162,6 +162,7 @@ Code.init = function() {
   window.addEventListener('resize', onresize, false);
 
   var toolbox = Toolbox.Build(Toolbox.Tree);
+  console.log(toolbox);
   Code.workspace = Blockly.inject('content_blocks',
       {grid:
           {spacing: 25,
@@ -229,23 +230,7 @@ Code.initLanguage = function() {
     languageMenu.options.add(option);
   }
   languageMenu.addEventListener('change', Code.changeLanguage, true);
-
-  // Inject language strings.
   document.getElementById('tab_blocks').textContent = MSG['blocks'];
-
-  var categories = ['catLogic', 'catLoops', 'catMath', 'catText', 'catLists',
-                    'catColour', 'catVariables', 'catFunctions'];
-  for (var i = 0, cat; cat = categories[i]; i++) {
-    document.getElementById(cat).setAttribute('name', MSG[cat]);
-  }
-  var textVars = document.getElementsByClassName('textVar');
-  for (var i = 0, textVar; textVar = textVars[i]; i++) {
-    textVar.textContent = MSG['textVariable'];
-  }
-  var listVars = document.getElementsByClassName('listVar');
-  for (var i = 0, listVar; listVar = listVars[i]; i++) {
-    listVar.textContent = MSG['listVariable'];
-  }
 };
 
 Code.discard = function() {

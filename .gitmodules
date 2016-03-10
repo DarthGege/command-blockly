@@ -4,3 +4,6 @@
 [submodule "closure-library"]
 	path = deps/closure-library
 	url = https://github.com/google/closure-library
+[submodule "deps/blockly-plugins"]
+	path = deps/blockly-plugins
+	url = https://github.com/HendrikD/blockly-plugins.git

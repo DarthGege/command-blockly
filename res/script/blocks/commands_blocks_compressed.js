@@ -38,12 +38,10 @@ Blockly.FieldTextInput.longValidator = function(text) {
 };
 Blockly.FieldTextInput.floatValidator = function(text) {
   var n = Blockly.FieldTextInput.numberValidator(text);
-  if (n) n = String(Math.max(0, Math.floor(n)));
   return n;
 };
 Blockly.FieldTextInput.doubleValidator = function(text) {
   var n = Blockly.FieldTextInput.numberValidator(text);
-  if (n) n = String(Math.max(0, Math.floor(n)));
   return n;
 };
 

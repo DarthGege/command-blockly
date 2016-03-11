@@ -30,6 +30,7 @@ Toolbox.Tree =
     ['category',{'name':'General','colour':"120"},
       ['block',{'type':'simple_command'}],
       ['block',{'type':'advanced_command'}],
+      ['block',{'type':'coords'}],,
       ['block',{'type':'stat_text_input'}],
     ],
     ['category',{'name':'Selector','colour':"0"},

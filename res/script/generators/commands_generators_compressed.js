@@ -218,6 +218,15 @@ Blockly.Commands['stat_text_input'] = function(block) {
   // TODO: Change ORDER_NONE to the correct strength.
   return [code, Blockly.Commands.ORDER_NONE];
 };
+Blockly.Commands['coords'] = function(block) {
+  var text_x = block.getFieldValue('X');
+  var text_y = block.getFieldValue('Y');
+  var text_z = block.getFieldValue('Z');
+  // TODO: Assemble JavaScript into code variable.
+  var code = text_x+' '+text_y+' '+text_z;
+  // TODO: Change ORDER_NONE to the correct strength.
+  return [code, Blockly.Commands.ORDER_NONE];
+};
 Blockly.Commands['player_selector'] = function(block) {
   var dropdown_name = block.getFieldValue('NAME');
   var value_name = Blockly.Commands.valueToCode(block, 'NAME', Blockly.Commands.ORDER_NONE);

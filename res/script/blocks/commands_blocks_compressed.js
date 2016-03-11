@@ -20,6 +20,9 @@ Blockly.FieldTextInput.numberValidator = function(text) {
   var n = parseFloat(text || 0);
   return isNaN(n) ? null : String(n);
 };
+Blockly.FieldTextInput.coordValidator = function(text) {
+  return (new RegExp("^~?([0-9]+.?)?[0-9]*$").test(text)) ? String(text) : null;
+};
 Blockly.FieldTextInput.byteValidator = function(text) {
   var n = Blockly.FieldTextInput.numberValidator(text);
   return (n < -128 || n > 127 || !isInt(n)) ? null : String(n);
@@ -356,7 +359,19 @@ Blockly.Blocks['stat_text_input'] = {
     this.setHelpUrl('http://www.example.com/');
   }
 };
-
+Blockly.Blocks['coords'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldImage("res/image/coords.png", 16, 16, "compound"))
+        .appendField(new Blockly.FieldTextInput("~0",Blockly.FieldTextInput.coordValidator), "X")
+        .appendField(new Blockly.FieldTextInput("~0",Blockly.FieldTextInput.coordValidator), "Y")
+        .appendField(new Blockly.FieldTextInput("~0",Blockly.FieldTextInput.coordValidator), "Z");
+    this.setOutput(true, "coords");
+    this.setColour(160);
+    this.setTooltip('');
+    this.setHelpUrl('http://www.example.com/');
+  }
+};
 Blockly.Blocks['player_selector'] = {
   init: function() {
     this.appendValueInput("NAME")
@@ -370,7 +385,6 @@ Blockly.Blocks['player_selector'] = {
     this.setHelpUrl('http://www.example.com/');
   }
 };
-
 Blockly.Blocks['ps_mode'] = {
   init: function() {
     this.appendValueInput("NAME")
@@ -404,7 +418,6 @@ Blockly.Blocks['command_achievement'] = {
     this.setHelpUrl('http://www.example.com/');
   }
 };
-
 Blockly.Blocks['command_blockdata'] = {
   init: function() {
     this.appendDummyInput()
@@ -424,7 +437,6 @@ Blockly.Blocks['command_blockdata'] = {
     this.setHelpUrl('http://www.example.com/');
   }
 };
-
 Blockly.Blocks['command_clear'] = {
   init: function() {
     this.appendDummyInput()

@@ -20,6 +20,9 @@ Blockly.FieldTextInput.numberValidator = function(text) {
   var n = parseFloat(text || 0);
   return isNaN(n) ? null : String(n);
 };
+Blockly.FieldTextInput.coordValidator = function(text) {
+  return (new RegExp("^~?([0-9]+.?)?[0-9]*$").test(text)) ? String(text) : null;
+};
 Blockly.FieldTextInput.byteValidator = function(text) {
   var n = Blockly.FieldTextInput.numberValidator(text);
   return (n < -128 || n > 127 || !isInt(n)) ? null : String(n);
@@ -38,13 +41,16 @@ Blockly.FieldTextInput.longValidator = function(text) {
 };
 Blockly.FieldTextInput.floatValidator = function(text) {
   var n = Blockly.FieldTextInput.numberValidator(text);
-  if (n) n = String(Math.max(0, Math.floor(n)));
   return n;
 };
 Blockly.FieldTextInput.doubleValidator = function(text) {
   var n = Blockly.FieldTextInput.numberValidator(text);
-  if (n) n = String(Math.max(0, Math.floor(n)));
   return n;
+};
+Blockly.FieldTextInput.weather_durationValidator = function(text) {
+  if(text == "") return text;
+  var n = Blockly.FieldTextInput.numberValidator(text);
+  return (n < 1 || n > 1000000 || !isInt(n)) ? null : String(n);
 };
 
 //Structure to accept commands
@@ -358,7 +364,19 @@ Blockly.Blocks['stat_text_input'] = {
     this.setHelpUrl('http://www.example.com/');
   }
 };
-
+Blockly.Blocks['coords'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldImage("res/image/coords.png", 16, 16, "compound"))
+        .appendField(new Blockly.FieldTextInput("~0",Blockly.FieldTextInput.coordValidator), "X")
+        .appendField(new Blockly.FieldTextInput("~0",Blockly.FieldTextInput.coordValidator), "Y")
+        .appendField(new Blockly.FieldTextInput("~0",Blockly.FieldTextInput.coordValidator), "Z");
+    this.setOutput(true, "coords");
+    this.setColour(160);
+    this.setTooltip('');
+    this.setHelpUrl('http://www.example.com/');
+  }
+};
 Blockly.Blocks['player_selector'] = {
   init: function() {
     this.appendValueInput("NAME")
@@ -372,7 +390,6 @@ Blockly.Blocks['player_selector'] = {
     this.setHelpUrl('http://www.example.com/');
   }
 };
-
 Blockly.Blocks['ps_mode'] = {
   init: function() {
     this.appendValueInput("NAME")
@@ -406,7 +423,6 @@ Blockly.Blocks['command_achievement'] = {
     this.setHelpUrl('http://www.example.com/');
   }
 };
-
 Blockly.Blocks['command_blockdata'] = {
   init: function() {
     this.appendDummyInput()
@@ -426,7 +442,6 @@ Blockly.Blocks['command_blockdata'] = {
     this.setHelpUrl('http://www.example.com/');
   }
 };
-
 Blockly.Blocks['command_clear'] = {
   init: function() {
     this.appendDummyInput()
@@ -451,6 +466,80 @@ Blockly.Blocks['command_clear'] = {
         .setCheck("nbt_compound")
         .setAlign(Blockly.ALIGN_RIGHT)
         .appendField("[dataTag]");
+    this.setOutput(true, "command");
+    this.setColour(180);
+    this.setTooltip('');
+    this.setHelpUrl('http://www.example.com/');
+  }
+};
+Blockly.Blocks['command_difficulty'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("difficulty");
+    this.appendDummyInput()
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField(new Blockly.FieldDropdown([["peaceful", "p"], ["easy", "e"], ["normal", "n"], ["hard", "h"]]), "DIFFICULTY");
+    this.setOutput(true, "command");
+    this.setColour(180);
+    this.setTooltip('');
+    this.setHelpUrl('http://www.example.com/');
+  }
+};
+Blockly.Blocks['command_entitydata'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("entitydata");
+    this.appendValueInput("ENTITY")
+        .setCheck("player_selector")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("<entity>");
+    this.appendValueInput("NBT")
+        .setCheck("nbt_compound")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("<dataTag>");
+    this.setOutput(true, "command");
+    this.setColour(180);
+    this.setTooltip('');
+    this.setHelpUrl('http://www.example.com/');
+  }
+};
+Blockly.Blocks['command_gamemode'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("gamemode")
+        .appendField(new Blockly.FieldDropdown([["survival", "s"], ["creative", "c"], ["adventure", "a"], ["spectator", "sp"]]), "MODE");
+    this.appendValueInput("PLAYER")
+        .setCheck("player_selector")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("[player]");
+    this.setOutput(true, "command");
+    this.setColour(180);
+    this.setTooltip('');
+    this.setHelpUrl('http://www.example.com/');
+  }
+};
+Blockly.Blocks['command_setworldspawn'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("setworldspawn");
+    this.appendValueInput("COORDS")
+        .setCheck("coords")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("<x> <y> <z>");
+    this.setOutput(true, "command");
+    this.setColour(180);
+    this.setTooltip('');
+    this.setHelpUrl('http://www.example.com/');
+  }
+};Blockly.Blocks['command_weather'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("weather")
+        .appendField(new Blockly.FieldDropdown([["clear", "clear"], ["rain", "rain"], ["thunder", "thunder"]]), "weather");
+    this.appendDummyInput()
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("[duration]")
+        .appendField(new Blockly.FieldTextInput("",Blockly.FieldTextInput.weather_durationValidator), "DURATION");
     this.setOutput(true, "command");
     this.setColour(180);
     this.setTooltip('');

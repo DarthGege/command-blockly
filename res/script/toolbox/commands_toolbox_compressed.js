@@ -94,6 +94,11 @@ Toolbox.Tree =
       ],
       ['block',{'type':'command_blockdata'}],
       ['block',{'type':'command_clear'}],
+      ['block',{'type':'command_difficulty'}],
+      ['block',{'type':'command_entitydata'}],
+      ['block',{'type':'command_gamemode'}],
+      ['block',{'type':'command_setworldspawn'}],
+      ['block',{'type':'command_weather'}],
     ],
   ]
 

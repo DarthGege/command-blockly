@@ -535,7 +535,7 @@ Blockly.Blocks['command_setworldspawn'] = {
   init: function() {
     this.appendDummyInput()
         .appendField("weather")
-        .appendField(new Blockly.FieldDropdown([["clear", "CLEAR"], ["rain", "RAIN"], ["thunder", "THUNDER"]]), "WEATHER");
+        .appendField(new Blockly.FieldDropdown([["clear", "clear"], ["rain", "rain"], ["thunder", "thunder"]]), "weather");
     this.appendDummyInput()
         .setAlign(Blockly.ALIGN_RIGHT)
         .appendField("[duration]")

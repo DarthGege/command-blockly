@@ -121,6 +121,7 @@ Toolbox.Tree =
       ['block',{'type':'command_gamemode'}],
       ['block',{'type':'command_setworldspawn'}],
       ['block',{'type':'command_weather'}],
+      ['block',{'type':'command_time'}],
     ],
   ]
 

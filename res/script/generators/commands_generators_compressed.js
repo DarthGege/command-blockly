@@ -459,3 +459,19 @@ Blockly.Commands['command_weather'] = function(block) {
   var code = "weather " + dropdown_weather + text_duration;
   return [code, Blockly.Commands.ORDER_NONE];
 };
+Blockly.Commands['command_time'] = function(block) {
+  var dropdown_parameter = block.getFieldValue('PARAMETER');
+  var text_value = block.getFieldValue('VALUE');
+  var code = "time " + dropdown_parameter + " " + text_value;
+  return [code, Blockly.Commands.ORDER_NONE];
+};
+Blockly.Commands['command_spreadplayers'] = function(block) {
+  var text_x = block.getFieldValue('X');
+  var text_y = block.getFieldValue('Y');
+  var text_spreaddistance = block.getFieldValue('SPREADDISTANCE');
+  var text_maxrange = block.getFieldValue('MAXRANGE');
+  var dropdown_respectteams = block.getFieldValue('RESPECTTEAMS');
+  var value_players = Blockly.Commands.valueToCode(block, 'PLAYERS', Blockly.Commands.ORDER_ATOMIC);
+  var code = 'spreadplayers ' + text_x + " " + text_y + " " + text_spreaddistance + " " + text_maxrange + " " + dropdown_respectteams + " " + value_players;
+  return [code, Blockly.Commands.ORDER_NONE];
+};

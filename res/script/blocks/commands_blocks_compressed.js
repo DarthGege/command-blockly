@@ -546,3 +546,53 @@ Blockly.Blocks['command_setworldspawn'] = {
     this.setHelpUrl('http://www.example.com/');
   }
 };
+Blockly.Blocks['command_time'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("time");
+    this.appendDummyInput()
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("<add|query|set>")
+        .appendField(new Blockly.FieldDropdown([["set", "set"], ["add", "add"], ["query", "query"]]), "PARAMETER");
+    this.appendDummyInput()
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("<value>")
+        .appendField(new Blockly.FieldTextInput("day"), "VALUE");
+    this.setOutput(true, "command");
+    this.setColour(180);
+    this.setTooltip('');
+    this.setHelpUrl('http://www.example.com/');
+  }
+};
+Blockly.Blocks['command_spreadplayers'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("spreadplayers");
+    this.appendDummyInput()
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("<x>")
+        .appendField(new Blockly.FieldTextInput("~0"), "X")
+        .appendField("<y>")
+        .appendField(new Blockly.FieldTextInput("~0"), "Y");
+    this.appendDummyInput()
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("<spreadDistance>")
+        .appendField(new Blockly.FieldTextInput("0.0"), "SPREADDISTANCE");
+    this.appendDummyInput()
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("<maxRange> ")
+        .appendField(new Blockly.FieldTextInput("1.0"), "MAXRANGE");
+    this.appendDummyInput()
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("<respectTeams>")
+        .appendField(new Blockly.FieldDropdown([["true", "true"], ["false", "false"]]), "RESPECTTEAMS");
+    this.appendValueInput("PLAYERS")
+        .setCheck("player_selector")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("<player>");
+    this.setOutput(true, "command");
+    this.setColour(180);
+    this.setTooltip('');
+    this.setHelpUrl('http://www.example.com/');
+  }
+};
